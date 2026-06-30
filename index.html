@@ -120,6 +120,34 @@
   footer{border-top:1px solid var(--line);background:#fff;}
   .ft{max-width:1080px;margin:0 auto;padding:18px 24px;font-size:11.5px;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
   .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;background:var(--tint);color:var(--blue);}
+
+  /* Partner program tier table */
+  .tiers thead th{text-align:center;}
+  .tiers th.lbl,.tiers td.lbl{text-align:left;width:34%;}
+  .tiers td{text-align:center;border-top:1px solid var(--line);}
+  .tiers thead th.prem{background:var(--blue);}
+  .tiers thead th.prem .pt{display:block;font-size:10px;color:#7fa8ff;font-weight:600;margin-top:2px;letter-spacing:.04em;}
+  .tiers td.prem{background:var(--tint);}
+  .tiers tbody tr:nth-child(even) td{background:var(--bg2);}
+  .tiers tbody tr:nth-child(even) td.prem{background:var(--tint);}
+  .tiers tr.cat td{background:#eef0f6;text-align:left;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);padding:8px 14px;}
+  .tiers tr.cat td.prem{background:#dfe4ff;}
+  .yes{color:var(--ink);font-weight:600;} td.prem .yes{color:var(--blue);}
+  .non{color:#c2c2cf;}
+  .tiercards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px;}
+  @media(max-width:760px){.tiercards{grid-template-columns:1fr;}}
+  .tc{border:1px solid var(--line);border-radius:8px;padding:16px;background:#fff;}
+  .tc.prem{border:2px solid var(--blue);background:var(--tint);position:relative;}
+  .tc .tcname{font-size:13px;font-weight:700;color:var(--ink);}
+  .tc.prem .tcname{color:var(--blue);}
+  .tc .tcfor{font-size:11.5px;color:var(--ink2);margin-top:3px;min-height:46px;}
+  .tc .tcrate{font-size:22px;font-weight:700;letter-spacing:-.02em;margin-top:6px;color:var(--ink);}
+  .tc.prem .tcrate{color:var(--blue);}
+  .tc .tcrate .un{font-size:11px;font-weight:500;color:var(--ink3);}
+  .tc .ribbon{position:absolute;top:-10px;right:12px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;letter-spacing:.05em;padding:3px 9px;border-radius:4px;}
+  .premonly{list-style:none;margin-top:4px;}
+  .premonly li{padding:5px 0 5px 18px;position:relative;font-size:13px;color:var(--ink);}
+  .premonly li::before{content:"\2605";position:absolute;left:0;top:6px;color:var(--blue);font-size:11px;}
 </style>
 </head>
 <body>
@@ -135,6 +163,7 @@
   <div class="secnav-in" id="tabs">
     <button class="active" data-tab="summary">Summary</button>
     <button data-tab="state">Current vs. Future</button>
+    <button data-tab="program">Partner Program</button>
     <button data-tab="model">Business Case Model</button>
     <button data-tab="proj">3-Year Projection</button>
     <button data-tab="sens">Sensitivity</button>
@@ -212,7 +241,90 @@
   </div>
 </section>
 
-<!-- ===== MODEL ===== -->
+<!-- ===== PARTNER PROGRAM ===== -->
+<section class="panel" id="p-program">
+  <h2>Partner Program &mdash; Tier Comparison</h2>
+  <p class="h2sub">Recast's program has three levels. Insight qualifies for the invitation-only Premier (Strategic) tier &mdash; the only level that combines the deepest licensing economics, full account protection, joint go-to-market investment, and a direct line to Recast's product and executive leadership.</p>
+
+  <div class="tiercards">
+    <div class="tc">
+      <div class="tcname">Registered</div>
+      <div class="tcfor">Transactional resale. Entry-level access for partners selling occasionally.</div>
+      <div class="tcrate">$4.00<span class="un"> /user/mo &mdash; list price</span></div>
+    </div>
+    <div class="tc">
+      <div class="tcname">Value / Preferred</div>
+      <div class="tcfor">Active partners with marketing, deal support, and a managed delivery model.</div>
+      <div class="tcrate">Up to 15% off<span class="un"> &mdash; from $4.00 list</span></div>
+    </div>
+    <div class="tc prem">
+      <div class="ribbon">INSIGHT</div>
+      <div class="tcname">Premier / Strategic</div>
+      <div class="tcfor">Invitation-only. Strategic partners building a service on Application Workspace.</div>
+      <div class="tcrate">$1.00<span class="un"> /user/mo &mdash; best in program, locked 3 yrs</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table class="tiers">
+      <thead><tr>
+        <th class="lbl">Benefit</th>
+        <th>Registered</th>
+        <th>Value / Preferred</th>
+        <th class="prem">Premier<span class="pt">STRATEGIC</span></th>
+      </tr></thead>
+      <tbody>
+        <tr class="cat"><td>Core access</td><td>&nbsp;</td><td>&nbsp;</td><td class="prem">&nbsp;</td></tr>
+        <tr><td class="lbl">Resell licensing</td><td><span class="yes">&#10003;</span></td><td><span class="yes">&#10003;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Partner portal &amp; training</td><td><span class="non">&mdash;</span></td><td><span class="yes">&#10003;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+
+        <tr class="cat"><td>Marketing &amp; GTM</td><td>&nbsp;</td><td>&nbsp;</td><td class="prem">&nbsp;</td></tr>
+        <tr><td class="lbl">Campaigns &amp; roadmap updates</td><td><span class="non">&mdash;</span></td><td><span class="yes">&#10003;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Joint campaigns with MDF funds</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Co-branded "Powered by Recast"</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+
+        <tr class="cat"><td>Sales &amp; deal support</td><td>&nbsp;</td><td>&nbsp;</td><td class="prem">&nbsp;</td></tr>
+        <tr><td class="lbl">Partner-of-record protection</td><td><span class="non">&mdash;</span></td><td><span class="yes">&#10003;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Co-sell &amp; expansion support</td><td><span class="non">&mdash;</span></td><td><span class="yes">&#10003;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Deepest licensing economics</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+
+        <tr class="cat"><td>Delivery enablement</td><td>&nbsp;</td><td>&nbsp;</td><td class="prem">&nbsp;</td></tr>
+        <tr><td class="lbl">MSP / resell delivery model</td><td><span class="non">&mdash;</span></td><td><span class="yes">&#10003;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Inbound services leads routed to you</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Full white-label &amp; multi-tenant</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Named engineer + sandbox</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+
+        <tr class="cat"><td>Strategic engagement</td><td>&nbsp;</td><td>&nbsp;</td><td class="prem">&nbsp;</td></tr>
+        <tr><td class="lbl">Dedicated partner manager</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Executive QBRs &mdash; direct to leadership</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Early roadmap access &amp; product input</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+        <tr><td class="lbl">Account exclusivity &amp; protected engagements</td><td><span class="non">&mdash;</span></td><td><span class="non">&mdash;</span></td><td class="prem"><span class="yes">&#10003;</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="split2">
+    <div class="card"><h3>Reserved for Premier</h3><div class="pad">
+      <ul class="premonly">
+        <li>Best-in-program licensing rate, locked for the term</li>
+        <li>Inbound services demand routed to you by Recast</li>
+        <li>Full white-label, multi-tenant delivery</li>
+        <li>Executive QBRs with a direct line to Recast leadership</li>
+        <li>Early roadmap access and priority product input</li>
+        <li>Account exclusivity and protected engagements</li>
+      </ul>
+    </div></div>
+    <div class="card"><h3>Why Premier for Insight</h3><div class="pad">
+      <ul class="facts">
+        <li>Insight is building a service &mdash; not reselling occasionally &mdash; so the economics and protection only pay off at the top tier.</li>
+        <li>Premier is the only level with services-lead routing, the engine behind the attached-services upside in the model.</li>
+        <li>A direct line to Recast leadership and the roadmap matches the strategic weight of Managed Endpoint 2.0.</li>
+      </ul>
+      <div class="notebox" style="margin-top:12px;"><b>Bottom line:</b> the value the model quantifies &mdash; deep margin, attached services, account protection &mdash; is unlocked at Premier, not below it.</div>
+    </div></div>
+  </div>
+</section>
+
 <section class="panel" id="p-model">
   <h2>Business Case Model</h2>
   <p class="h2sub">Enter your own assumptions below. Outputs update live. Defaults reflect Insight's Year-1 Premier terms under a deliberately conservative Base case. Use the scenario presets to reset all assumptions at once.</p>
