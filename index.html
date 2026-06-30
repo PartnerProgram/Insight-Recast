@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insight + Recast — Partnership Business Case</title>
+<style>
+  :root{
+    --blue:#0000CC; --navy:#0a1633; --ink:#1a1a2e; --ink2:#55556a; --ink3:#8a8a9a;
+    --line:#e3e3ea; --line2:#cfcfda; --bg:#ffffff; --bg2:#f6f7fb; --tint:#eef1ff;
+    --green:#0f7a3f; --red:#b42318; --amber:#9a6700;
+    --font:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  body{background:var(--bg2);color:var(--ink);font-family:var(--font);font-size:14px;line-height:1.5;}
+  .num{font-variant-numeric:tabular-nums;}
+
+  /* Header */
+  header{background:var(--navy);color:#fff;}
+  .hd{max-width:1080px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;}
+  .hd .brand{font-size:17px;font-weight:700;letter-spacing:-.01em;}
+  .hd .brand .sw{color:#7fa8ff;font-weight:400;font-size:12px;margin-left:4px;}
+  .hd .meta{text-align:right;font-size:12px;color:#aeb6cf;line-height:1.4;}
+  .hd .meta b{color:#fff;font-weight:600;display:block;font-size:13px;}
+
+  /* Section nav */
+  .secnav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;}
+  .secnav-in{max-width:1080px;margin:0 auto;padding:0 24px;display:flex;gap:2px;overflow-x:auto;}
+  .secnav button{font-family:inherit;font-size:13px;font-weight:500;color:var(--ink2);background:none;border:none;
+    cursor:pointer;padding:13px 14px;border-bottom:2px solid transparent;white-space:nowrap;}
+  .secnav button:hover{color:var(--ink);}
+  .secnav button.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:600;}
+
+  main{max-width:1080px;margin:0 auto;padding:26px 24px 80px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  h2{font-size:18px;font-weight:700;letter-spacing:-.01em;color:var(--ink);margin-bottom:4px;}
+  .h2sub{font-size:13px;color:var(--ink2);margin-bottom:18px;max-width:760px;}
+  h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);
+    margin-bottom:0;padding:10px 14px;background:var(--bg2);border-bottom:1px solid var(--line);}
+
+  .card{background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:18px;}
+  .card .pad{padding:16px 18px;}
+
+  /* KPI strip */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:8px;}
+  @media(max-width:760px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:#fff;padding:16px 16px;}
+  .kpi .l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);}
+  .kpi .v{font-size:26px;font-weight:700;color:var(--blue);letter-spacing:-.02em;margin-top:6px;}
+  .kpi .s{font-size:11.5px;color:var(--ink2);margin-top:4px;}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th,td{padding:10px 14px;text-align:left;}
+  thead th{background:var(--navy);color:#fff;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;}
+  tbody td{border-top:1px solid var(--line);}
+  tbody tr:nth-child(even) td{background:var(--bg2);}
+  .ralign{text-align:right;font-variant-numeric:tabular-nums;}
+  td.lbl{color:var(--ink);font-weight:500;}
+  td.sub{color:var(--ink2);font-weight:400;padding-left:26px;font-size:12.5px;}
+  tr.tot td{border-top:2px solid var(--line2);font-weight:700;background:var(--tint)!important;}
+  tr.tot td{color:var(--blue);}
+  .pos{color:var(--green);} .neg{color:var(--red);}
+  .colhi{background:var(--tint);}
+  thead th.colhi{background:var(--blue);}
+
+  /* Current vs future */
+  table.cf td{vertical-align:top;}
+  table.cf th:first-child{width:22%;}
+  table.cf .cur{color:var(--ink2);} table.cf .fut{color:var(--ink);}
+  table.cf .fut b{color:var(--green);font-weight:600;}
+
+  /* Model layout */
+  .model{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:18px;align-items:start;}
+  @media(max-width:880px){.model{grid-template-columns:1fr;}}
+
+  .scenrow{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .scenrow .lab{font-size:12px;font-weight:600;color:var(--ink2);}
+  .seg{display:inline-flex;border:1px solid var(--line2);border-radius:7px;overflow:hidden;}
+  .seg button{font-family:inherit;font-size:13px;font-weight:500;color:var(--ink2);background:#fff;border:none;
+    border-right:1px solid var(--line2);cursor:pointer;padding:8px 16px;}
+  .seg button:last-child{border-right:none;}
+  .seg button.on{background:var(--blue);color:#fff;font-weight:600;}
+  .reset{font-family:inherit;font-size:12.5px;color:var(--blue);background:none;border:none;cursor:pointer;text-decoration:underline;}
+
+  .ig{padding:14px 16px;}
+  .ig + .ig{border-top:1px solid var(--line);}
+  .field{display:grid;grid-template-columns:1fr 130px;align-items:center;gap:10px;padding:6px 0;}
+  .field label{font-size:13px;color:var(--ink);}
+  .field label .u{color:var(--ink3);font-size:11.5px;margin-left:4px;}
+  .field .wrap{position:relative;}
+  .field input{width:100%;padding:8px 10px;font-size:13px;font-family:inherit;border:1px solid var(--line2);
+    border-radius:6px;text-align:right;color:var(--ink);background:#fff;font-variant-numeric:tabular-nums;}
+  .field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,0,204,.12);}
+  .field input[readonly]{background:var(--bg2);color:var(--ink2);border-style:dashed;}
+  .field .pre,.field .suf{position:absolute;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink3);}
+  .field .pre{left:9px;} .field .suf{right:9px;}
+  .field input.haspre{padding-left:19px;} .field input.hassuf{padding-right:24px;}
+  .iglead{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink3);margin-bottom:6px;}
+
+  .lockline{font-size:11.5px;color:var(--green);font-weight:500;margin-top:8px;}
+  .notebox{font-size:12px;color:var(--ink2);background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:12px 14px;margin-top:8px;line-height:1.55;}
+  .notebox b{color:var(--ink);}
+
+  ul.facts{list-style:none;}
+  ul.facts li{padding:5px 0 5px 16px;position:relative;font-size:13px;color:var(--ink);}
+  ul.facts li::before{content:"";position:absolute;left:0;top:11px;width:5px;height:5px;background:var(--blue);border-radius:50%;}
+  ul.method li{padding:4px 0 4px 16px;position:relative;font-size:12.5px;color:var(--ink2);}
+  ul.method li::before{content:"\2014";position:absolute;left:0;color:var(--ink3);}
+  ul.method li b{color:var(--ink);font-weight:600;}
+
+  .split2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:760px){.split2{grid-template-columns:1fr;}}
+
+  footer{border-top:1px solid var(--line);background:#fff;}
+  .ft{max-width:1080px;margin:0 auto;padding:18px 24px;font-size:11.5px;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+  .tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;background:var(--tint);color:var(--blue);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="brand">Recast<span class="sw">Software</span> &nbsp;&times;&nbsp; Insight Enterprises</div>
+    <div class="meta"><b>Partnership Business Case</b>Application Workspace &bull; Premier Tier &bull; Confidential</div>
+  </div>
+</header>
+
+<div class="secnav">
+  <div class="secnav-in" id="tabs">
+    <button class="active" data-tab="summary">Summary</button>
+    <button data-tab="state">Current vs. Future</button>
+    <button data-tab="model">Business Case Model</button>
+    <button data-tab="proj">3-Year Projection</button>
+    <button data-tab="sens">Sensitivity</button>
+    <button data-tab="method">Methodology</button>
+  </div>
+</div>
+
+<main>
+
+<!-- ===== SUMMARY ===== -->
+<section class="panel active" id="p-summary">
+  <h2>Executive Summary</h2>
+  <p class="h2sub">Recast Application Workspace is the application-delivery layer for Insight's Managed Endpoint 2.0 service. Following a completed technical evaluation, Recast has offered Insight its invitation-only Premier tier at a rate-locked $600K Year-1 minimum. The figures below are the Base-case output of the editable model in this document; all assumptions can be adjusted under "Business Case Model."</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="l">Yr-1 Licensing</div><div class="v">$600K</div><div class="s">50,000 seats @ $1.00/user/mo, locked 3 yrs</div></div>
+    <div class="kpi"><div class="l">3-Yr Gross Profit (P&amp;L)</div><div class="v" id="su_pnl">$19.1M</div><div class="s">Licensing + services + implementation</div></div>
+    <div class="kpi"><div class="l">3-Yr Efficiency Value</div><div class="v" id="su_eff">$2.9M</div><div class="s">Reclaimed delivery capacity (avoided cost)</div></div>
+    <div class="kpi"><div class="l">Yr-1 GP / $1 Licensing</div><div class="v" id="su_roi">5.4&times;</div><div class="s">P&amp;L gross profit basis</div></div>
+  </div>
+  <p style="font-size:11.5px;color:var(--ink3);margin:2px 0 18px;">Base case. Services attach is the largest single driver and is a user-set assumption &mdash; see Sensitivity for the range.</p>
+
+  <div class="split2">
+    <div class="card">
+      <h3>The Case in Brief</h3>
+      <div class="pad">
+        <ul class="facts">
+          <li>Third-party application management is the top customer demand inside Managed Endpoint 2.0 and the slowest-scaling work today.</li>
+          <li>Packaging and delivery are duplicated across SCCM, Intune, Citrix, and AVD; capacity scales with platforms, not headcount.</li>
+          <li>Application Workspace was validated end-to-end: managed apps, custom packaging, user experience, dashboarding, multi-tenancy.</li>
+          <li>Premier provides the deepest economics, partner-of-record protection, and a direct line to Recast leadership.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Deal Terms</h3>
+      <div class="pad" style="padding:0;">
+        <table>
+          <tbody>
+            <tr><td class="lbl">Tier</td><td class="ralign">Premier (invitation only)</td></tr>
+            <tr><td class="lbl">Year-1 commitment</td><td class="ralign">$600,000</td></tr>
+            <tr><td class="lbl">Entry rate</td><td class="ralign">$1.00 / user / mo</td></tr>
+            <tr><td class="lbl">Term</td><td class="ralign">3 years, rate-locked</td></tr>
+            <tr><td class="lbl">Volume tiers</td><td class="ralign">$1.00 &rarr; $0.90 &rarr; $0.80</td></tr>
+            <tr><td class="lbl">Margin protection</td><td class="ralign">Partner-of-record + renewal</td></tr>
+            <tr><td class="lbl">Services delivery</td><td class="ralign">Recast routes inbound to partner</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="notebox"><b>How to read the value figures.</b> "Gross Profit (P&amp;L)" is cash margin from licensing resale, attached services, and implementation. "Efficiency Value" is the labor cost avoided by automating application packaging &mdash; real value, but non-cash, so it is reported separately and excluded from the headline return.</div>
+</section>
+
+<!-- ===== CURRENT VS FUTURE ===== -->
+<section class="panel" id="p-state">
+  <h2>Current State vs. Future State</h2>
+  <p class="h2sub">Operating impact of embedding Application Workspace in the managed-endpoint delivery model. Figures are documented evaluation findings and planning inputs.</p>
+  <div class="card">
+    <table class="cf">
+      <thead><tr><th>Dimension</th><th>Current &mdash; Without AW</th><th>Future &mdash; With AW</th></tr></thead>
+      <tbody>
+        <tr><td class="lbl">Delivery model</td><td class="cur">Per-platform packaging across SCCM, Intune, Citrix, AVD, macOS; one change can mean up to five rebuilds.</td><td class="fut"><b>Define once, deliver everywhere</b> &mdash; one definition reaches every environment.</td></tr>
+        <tr><td class="lbl">Packaging effort</td><td class="cur">~8 hrs per app; manual repackaging each release; persistent backlog.</td><td class="fut">~<b>2 hrs</b> first build, then automated updates; roughly 1/8th the time observed.</td></tr>
+        <tr><td class="lbl">Catalog</td><td class="cur">All apps packaged in-house.</td><td class="fut"><b>8,000+ pre-tested apps</b>, kept current automatically; team packages only the ~30% that is unique.</td></tr>
+        <tr><td class="lbl">Engineering capacity</td><td class="cur">~60% of effort consumed by manual application work.</td><td class="fut">Drops to <b>~20%</b>; capacity redeployed to billable delivery.</td></tr>
+        <tr><td class="lbl">End-user experience</td><td class="cur">Ticket-driven installs; days of wait; high escalation churn.</td><td class="fut">Self-service in seconds; up to <b>~80% fewer</b> app-related tickets.</td></tr>
+        <tr><td class="lbl">Onboarding</td><td class="cur">Build work duplicated per client environment.</td><td class="fut"><b>Build once, sync everywhere</b>; go-live in 4&ndash;6 weeks.</td></tr>
+        <tr><td class="lbl">Security &amp; governance</td><td class="cur">Version drift; patching tied to maintenance windows.</td><td class="fut">Standardized, audited; <b>continuous updates</b>, always current.</td></tr>
+        <tr><td class="lbl">Account economics</td><td class="cur">No incumbency protection; resellers can undercut.</td><td class="fut"><b>Premier</b>: best-in-program rate, partner-of-record and renewal protection.</td></tr>
+        <tr><td class="lbl">Revenue motion</td><td class="cur">One-off project services; limited recurring layer.</td><td class="fut">Recurring licensing + <b>attached services</b> routed by Recast.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== MODEL ===== -->
+<section class="panel" id="p-model">
+  <h2>Business Case Model</h2>
+  <p class="h2sub">Enter your own assumptions below. Outputs update live. Defaults reflect Insight's Year-1 Premier terms under a deliberately conservative Base case. Use the scenario presets to reset all assumptions at once.</p>
+
+  <div class="scenrow">
+    <span class="lab">Scenario preset:</span>
+    <div class="seg" id="seg">
+      <button data-preset="conservative">Conservative</button>
+      <button class="on" data-preset="base">Base</button>
+      <button data-preset="aggressive">Aggressive</button>
+    </div>
+    <button class="reset" id="resetBtn">Reset to Base</button>
+  </div>
+
+  <div class="model">
+    <!-- INPUTS -->
+    <div class="card">
+      <h3>Inputs &mdash; Assumptions</h3>
+      <div class="ig">
+        <div class="iglead">Licensing &amp; deal terms</div>
+        <div class="field"><label>Year-1 managed seats</label><div class="wrap"><input id="users" type="number" step="1000" value="50000"></div></div>
+        <div class="field"><label>Recast rate <span class="u">/user/mo &middot; auto by tier</span></label><div class="wrap"><span class="pre">$</span><input id="rateView" class="haspre" type="text" value="1.00" readonly></div></div>
+        <div class="field"><label>Insight bundled price <span class="u">/user/mo</span></label><div class="wrap"><span class="pre">$</span><input id="resale" class="haspre" type="number" step="0.10" value="2.00"></div></div>
+        <div class="lockline">&#128274; $600K minimum &amp; $1.00 entry rate locked for the 3-year term</div>
+      </div>
+      <div class="ig">
+        <div class="iglead">Attached services</div>
+        <div class="field"><label>Services attach <span class="u">&times; licensing rev</span></label><div class="wrap"><input id="servicesRatio" class="hassuf" type="number" step="0.5" value="4"><span class="suf">&times;</span></div></div>
+        <div class="field"><label>Services gross margin</label><div class="wrap"><input id="servicesMargin" class="hassuf" type="number" step="1" value="50"><span class="suf">%</span></div></div>
+      </div>
+      <div class="ig">
+        <div class="iglead">Delivery efficiency</div>
+        <div class="field"><label>Apps under management</label><div class="wrap"><input id="totalApps" type="number" step="25" value="500"></div></div>
+        <div class="field"><label>Custom / non-catalog</label><div class="wrap"><input id="pctCustom" class="hassuf" type="number" step="5" value="30"><span class="suf">%</span></div></div>
+        <div class="field"><label>Apps / engineer / yr</label><div class="wrap"><input id="appsPerEng" type="number" step="5" value="60"></div></div>
+        <div class="field"><label>Efficiency multiple</label><div class="wrap"><input id="customEff" class="hassuf" type="number" step="0.5" value="7"><span class="suf">&times;</span></div></div>
+        <div class="field"><label>Loaded engineer cost <span class="u">/yr</span></label><div class="wrap"><span class="pre">$</span><input id="engCost" class="haspre" type="number" step="5000" value="120000"></div></div>
+      </div>
+      <div class="ig">
+        <div class="iglead">Implementation projects</div>
+        <div class="field"><label>Projects / yr</label><div class="wrap"><input id="projects" type="number" step="1" value="12"></div></div>
+        <div class="field"><label>Fee / project</label><div class="wrap"><span class="pre">$</span><input id="implFee" class="haspre" type="number" step="5000" value="40000"></div></div>
+        <div class="field"><label>Implementation margin</label><div class="wrap"><input id="implMargin" class="hassuf" type="number" step="1" value="55"><span class="suf">%</span></div></div>
+      </div>
+    </div>
+
+    <!-- OUTPUTS -->
+    <div>
+      <div class="card">
+        <h3>Year-1 Gross-Profit Build</h3>
+        <table>
+          <tbody>
+            <tr><td class="lbl">Licensing revenue (Insight)</td><td class="ralign num" id="o_licRev">$0</td></tr>
+            <tr><td class="sub">less Recast licensing cost</td><td class="ralign num neg" id="o_licCost">$0</td></tr>
+            <tr><td class="sub">Licensing gross profit</td><td class="ralign num" id="o_licGP">$0</td></tr>
+            <tr><td class="lbl">Attached services revenue</td><td class="ralign num" id="o_svcRev">$0</td></tr>
+            <tr><td class="sub">Services gross profit</td><td class="ralign num" id="o_svcGP">$0</td></tr>
+            <tr><td class="lbl">Implementation gross profit</td><td class="ralign num" id="o_implGP">$0</td></tr>
+            <tr class="tot"><td>Gross Profit &mdash; P&amp;L (cash)</td><td class="ralign num" id="o_pnl">$0</td></tr>
+            <tr><td class="lbl">Efficiency value <span style="color:var(--ink3);font-weight:400;">(avoided labor cost)</span></td><td class="ralign num" id="o_capVal">$0</td></tr>
+            <tr class="tot"><td>Total Economic Value</td><td class="ralign num" id="o_total">$0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="split2">
+        <div class="card">
+          <h3>Return Metrics</h3>
+          <div class="pad" style="padding:0;">
+            <table><tbody>
+              <tr><td class="lbl">P&amp;L GP / $1 licensing</td><td class="ralign num" id="m_roi_pnl">0&times;</td></tr>
+              <tr><td class="lbl">Total value / $1 licensing</td><td class="ralign num" id="m_roi_tot">0&times;</td></tr>
+              <tr><td class="lbl">Recurring GP / yr</td><td class="ralign num" id="m_rec">$0</td></tr>
+              <tr><td class="lbl">Licensing GP margin</td><td class="ralign num" id="m_licmar">0%</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Delivery Capacity (FTE)</h3>
+          <div class="pad" style="padding:0;">
+            <table><tbody>
+              <tr><td class="lbl">App-lifecycle FTE &mdash; manual</td><td class="ralign num" id="m_fteM">0</td></tr>
+              <tr><td class="lbl">App-lifecycle FTE &mdash; with AW</td><td class="ralign num" id="m_fteA">0</td></tr>
+              <tr class="tot"><td>FTE capacity reclaimed</td><td class="ralign num" id="m_fteS">0</td></tr>
+              <tr><td class="lbl">Custom-packaging speed-up</td><td class="ralign num" id="m_eff">0&times;</td></tr>
+            </tbody></table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTION ===== -->
+<section class="panel" id="p-proj">
+  <h2>3-Year Projection</h2>
+  <p class="h2sub">Seat counts per year are editable. The Recast rate steps down automatically as volume crosses each tier ($1.00 &le;100K, $0.90 &le;250K, $0.80 &le;500K). All other assumptions are inherited from the Business Case Model.</p>
+
+  <div class="card" style="margin-bottom:14px;">
+    <div class="ig" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+      <div class="field" style="grid-template-columns:1fr 110px;"><label>Year 1 seats</label><div class="wrap"><input id="s1" type="number" step="5000" value="50000"></div></div>
+      <div class="field" style="grid-template-columns:1fr 110px;"><label>Year 2 seats</label><div class="wrap"><input id="s2" type="number" step="5000" value="100000"></div></div>
+      <div class="field" style="grid-template-columns:1fr 110px;"><label>Year 3 seats</label><div class="wrap"><input id="s3" type="number" step="5000" value="150000"></div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <table id="projtbl">
+      <thead><tr>
+        <th>Line item</th>
+        <th class="ralign">Year 1</th>
+        <th class="ralign">Year 2</th>
+        <th class="ralign">Year 3</th>
+        <th class="ralign colhi">3-Yr Total</th>
+      </tr></thead>
+      <tbody>
+        <tr><td class="lbl">Managed seats</td><td class="ralign num" id="p_seat1"></td><td class="ralign num" id="p_seat2"></td><td class="ralign num" id="p_seat3"></td><td class="ralign num colhi" id="p_seatT"></td></tr>
+        <tr><td class="lbl">Recast rate /user/mo</td><td class="ralign num" id="p_rate1"></td><td class="ralign num" id="p_rate2"></td><td class="ralign num" id="p_rate3"></td><td class="ralign num colhi">&mdash;</td></tr>
+        <tr><td class="lbl">Licensing commitment</td><td class="ralign num" id="p_lc1"></td><td class="ralign num" id="p_lc2"></td><td class="ralign num" id="p_lc3"></td><td class="ralign num colhi" id="p_lcT"></td></tr>
+        <tr><td class="lbl">Licensing gross profit</td><td class="ralign num" id="p_lg1"></td><td class="ralign num" id="p_lg2"></td><td class="ralign num" id="p_lg3"></td><td class="ralign num colhi" id="p_lgT"></td></tr>
+        <tr><td class="lbl">Services gross profit</td><td class="ralign num" id="p_sg1"></td><td class="ralign num" id="p_sg2"></td><td class="ralign num" id="p_sg3"></td><td class="ralign num colhi" id="p_sgT"></td></tr>
+        <tr><td class="lbl">Implementation gross profit</td><td class="ralign num" id="p_ig1"></td><td class="ralign num" id="p_ig2"></td><td class="ralign num" id="p_ig3"></td><td class="ralign num colhi" id="p_igT"></td></tr>
+        <tr class="tot"><td>Gross Profit &mdash; P&amp;L</td><td class="ralign num" id="p_pn1"></td><td class="ralign num" id="p_pn2"></td><td class="ralign num" id="p_pn3"></td><td class="ralign num colhi" id="p_pnT"></td></tr>
+        <tr><td class="lbl">Efficiency value (avoided cost)</td><td class="ralign num" id="p_ef1"></td><td class="ralign num" id="p_ef2"></td><td class="ralign num" id="p_ef3"></td><td class="ralign num colhi" id="p_efT"></td></tr>
+        <tr class="tot"><td>Total Economic Value</td><td class="ralign num" id="p_tv1"></td><td class="ralign num" id="p_tv2"></td><td class="ralign num" id="p_tv3"></td><td class="ralign num colhi" id="p_tvT"></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size:11.5px;color:var(--ink3);">Efficiency value reflects the managed application portfolio (held constant across years) rather than seat count, and is therefore flat year to year.</p>
+</section>
+
+<!-- ===== SENSITIVITY ===== -->
+<section class="panel" id="p-sens">
+  <h2>Sensitivity Analysis</h2>
+  <p class="h2sub">The case is most sensitive to the attached-services multiple. The tables below show Year-1 outcomes across the three scenario presets and across a range of services-attach assumptions, holding everything else at the current model values.</p>
+
+  <div class="split2">
+    <div class="card">
+      <h3>By Scenario &mdash; Year 1</h3>
+      <table>
+        <thead><tr><th>Scenario</th><th class="ralign">P&amp;L GP</th><th class="ralign">Efficiency</th><th class="ralign">GP/$1 lic.</th></tr></thead>
+        <tbody id="scenTbl"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <h3>By Services Attach &mdash; Year 1</h3>
+      <table>
+        <thead><tr><th>Attach &times;</th><th class="ralign">P&amp;L GP</th><th class="ralign">GP/$1 lic.</th></tr></thead>
+        <tbody id="attachTbl"></tbody>
+      </table>
+      <div class="pad" style="font-size:11.5px;color:var(--ink3);padding:10px 14px;">Uses current model inputs; only the services-attach multiple varies.</div>
+    </div>
+  </div>
+  <div class="notebox"><b>Read:</b> Even with no attached services credited, the partnership returns positive P&amp;L gross profit on licensing margin and implementation alone. Services attach is upside that scales the return &mdash; and is the assumption to validate against real Managed Endpoint 2.0 pipeline before committing externally.</div>
+</section>
+
+<!-- ===== METHODOLOGY ===== -->
+<section class="panel" id="p-method">
+  <h2>Methodology &amp; Assumptions</h2>
+  <p class="h2sub">All outputs are deterministic functions of the inputs shown in the Business Case Model. No figure is hard-coded; every result recalculates from the assumptions.</p>
+  <div class="split2">
+    <div class="card"><h3>Calculation Basis</h3><div class="pad">
+      <ul class="method">
+        <li><b>Licensing GP</b> = (Insight price &minus; Recast rate) &times; seats &times; 12.</li>
+        <li><b>Services GP</b> = attach&times; &times; licensing revenue &times; services margin.</li>
+        <li><b>Implementation GP</b> = projects &times; fee &times; margin.</li>
+        <li><b>P&amp;L Gross Profit</b> = licensing GP + services GP + implementation GP (cash margin).</li>
+        <li><b>Efficiency value</b> = reclaimed FTE &times; loaded engineer cost; reported separately as avoided cost, not in P&amp;L.</li>
+        <li><b>Reclaimed FTE</b> = manual app-lifecycle FTE &minus; FTE with AW, where AW only packages custom apps at the efficiency multiple.</li>
+        <li><b>Recast rate</b> steps by volume tier: $1.00 (&le;100K), $0.90 (&le;250K), $0.80 (&le;500K).</li>
+      </ul>
+    </div></div>
+    <div class="card"><h3>Key Assumptions &amp; Sources</h3><div class="pad">
+      <ul class="method">
+        <li>Premier terms: $600K Year-1 minimum, $1.00 entry rate, 3-year rate lock, volume tiers as above.</li>
+        <li>Efficiency multiple (~7&times;) reflects documented packaging time reduction (~8 hrs &rarr; ~2 hrs; ~1/8th time observed by partners).</li>
+        <li>Manual application work ~60% of effort, targeted to ~20% post-deployment.</li>
+        <li>Services attach (default 4&times;, conservative) is a planning assumption &mdash; the primary item to validate.</li>
+        <li>Recast: 8,000+ pre-tested apps; 60M+ endpoints managed; SOC 2 Type II / ISO 27001.</li>
+        <li>Figures are planning estimates for internal evaluation, not guarantees.</li>
+      </ul>
+    </div></div>
+  </div>
+  <p style="margin-top:8px;"><span class="tag">CONFIDENTIAL</span> <span style="font-size:12px;color:var(--ink3);margin-left:8px;">Prepared for Insight Enterprises &bull; Application Workspace Premier Partner Program.</span></p>
+</section>
+
+</main>
+
+<footer>
+  <div class="ft">
+    <span>Recast Software &bull; Application Workspace Premier Partner Program</span>
+    <span>Prepared for Insight Enterprises &bull; Confidential</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var $=function(id){return document.getElementById(id);};
+  var num=function(id){return parseFloat($(id).value)||0;};
+  var fmt=function(n){return '$'+Math.round(n).toLocaleString('en-US');};
+  var fmtS=function(n){
+    if(Math.abs(n)>=1e6) return '$'+(n/1e6).toFixed(1)+'M';
+    if(Math.abs(n)>=1e3) return '$'+Math.round(n/1e3)+'K';
+    return '$'+Math.round(n);
+  };
+  var n0=function(n){return Math.round(n).toLocaleString('en-US');};
+
+  function tierRate(seats){ return seats>=250000?0.80 : (seats>=100000?0.90:1.00); }
+
+  // shared (non-seat) assumptions read from model inputs
+  function shared(){
+    return {
+      resale:num('resale'), sr:num('servicesRatio'), sm:num('servicesMargin')/100,
+      ta:num('totalApps'), pcu:num('pctCustom')/100, ape:num('appsPerEng'),
+      ce:num('customEff'), ec:num('engCost'),
+      pj:num('projects'), fee:num('implFee'), im:num('implMargin')/100
+    };
+  }
+  function yr(seats,a){
+    var pc=tierRate(seats);
+    var licCommit=pc*seats*12, licRev=a.resale*seats*12, licGP=(a.resale-pc)*seats*12;
+    var svcRev=a.sr*licRev, svcGP=svcRev*a.sm;
+    var implGP=a.pj*a.fee*a.im;
+    var pnl=licGP+svcGP+implGP;
+    var ca=a.ta*a.pcu, fteM=a.ape>0?a.ta/a.ape:0, fteA=a.ape>0?(ca/a.ce)/a.ape:0, fteS=fteM-fteA;
+    var capVal=fteS*a.ec, total=pnl+capVal;
+    return {rate:pc,licCommit:licCommit,licRev:licRev,licGP:licGP,svcRev:svcRev,svcGP:svcGP,implGP:implGP,
+            pnl:pnl,capVal:capVal,total:total,recGP:licGP+svcGP,fteM:fteM,fteA:fteA,fteS:fteS};
+  }
+
+  var PRESETS={
+    conservative:{resale:1.50,servicesRatio:4,servicesMargin:42,totalApps:500,pctCustom:40,appsPerEng:80,customEff:6,projects:6,implFee:30000,implMargin:50},
+    base:        {resale:2.00,servicesRatio:4,servicesMargin:50,totalApps:500,pctCustom:30,appsPerEng:60,customEff:7,projects:12,implFee:40000,implMargin:55},
+    aggressive:  {resale:2.50,servicesRatio:8,servicesMargin:55,totalApps:500,pctCustom:25,appsPerEng:55,customEff:8,projects:18,implFee:50000,implMargin:55}
+  };
+
+  function calc(){
+    var a=shared();
+    var seats=num('users');
+    $('rateView').value = tierRate(seats).toFixed(2);
+    var r=yr(seats,a);
+
+    // Year-1 build
+    $('o_licRev').textContent=fmt(r.licRev);
+    $('o_licCost').textContent='\u2212'+fmt(r.licCommit);
+    $('o_licGP').textContent=fmt(r.licGP);
+    $('o_svcRev').textContent=fmt(r.svcRev);
+    $('o_svcGP').textContent=fmt(r.svcGP);
+    $('o_implGP').textContent=fmt(r.implGP);
+    $('o_pnl').textContent=fmt(r.pnl);
+    $('o_capVal').textContent=fmt(r.capVal);
+    $('o_total').textContent=fmt(r.total);
+
+    // metrics
+    $('m_roi_pnl').textContent=(r.pnl/r.licCommit).toFixed(1)+'\u00D7';
+    $('m_roi_tot').textContent=(r.total/r.licCommit).toFixed(1)+'\u00D7';
+    $('m_rec').textContent=fmt(r.recGP);
+    $('m_licmar').textContent=Math.round((r.resale=a.resale, (a.resale>0?(a.resale-r.rate)/a.resale:0))*100)+'%';
+    $('m_fteM').textContent=r.fteM.toFixed(1);
+    $('m_fteA').textContent=r.fteA.toFixed(1);
+    $('m_fteS').textContent=r.fteS.toFixed(1);
+    $('m_eff').textContent=a.ce.toFixed(0)+'\u00D7';
+
+    // summary KPIs (3-yr base of CURRENT assumptions, using proj seats)
+    proj(a);
+  }
+
+  function proj(a){
+    if(!a) a=shared();
+    var seats=[num('s1'),num('s2'),num('s3')];
+    var R=seats.map(function(s){return yr(s,a);});
+    var sum=function(f){return R.reduce(function(t,x){return t+f(x);},0);};
+
+    for(var i=0;i<3;i++){
+      var r=R[i], k=i+1;
+      $('p_seat'+k).textContent=n0(seats[i]);
+      $('p_rate'+k).textContent='$'+r.rate.toFixed(2);
+      $('p_lc'+k).textContent=fmtS(r.licCommit);
+      $('p_lg'+k).textContent=fmtS(r.licGP);
+      $('p_sg'+k).textContent=fmtS(r.svcGP);
+      $('p_ig'+k).textContent=fmtS(r.implGP);
+      $('p_pn'+k).textContent=fmtS(r.pnl);
+      $('p_ef'+k).textContent=fmtS(r.capVal);
+      $('p_tv'+k).textContent=fmtS(r.total);
+    }
+    $('p_seatT').textContent=n0(seats[0]+seats[1]+seats[2]);
+    $('p_lcT').textContent=fmtS(sum(function(x){return x.licCommit;}));
+    $('p_lgT').textContent=fmtS(sum(function(x){return x.licGP;}));
+    $('p_sgT').textContent=fmtS(sum(function(x){return x.svcGP;}));
+    $('p_igT').textContent=fmtS(sum(function(x){return x.implGP;}));
+    $('p_pnT').textContent=fmtS(sum(function(x){return x.pnl;}));
+    $('p_efT').textContent=fmtS(sum(function(x){return x.capVal;}));
+    $('p_tvT').textContent=fmtS(sum(function(x){return x.total;}));
+
+    // summary tab headline
+    $('su_pnl').textContent=fmtS(sum(function(x){return x.pnl;}));
+    $('su_eff').textContent=fmtS(sum(function(x){return x.capVal;}));
+    $('su_roi').textContent=(R[0].pnl/R[0].licCommit).toFixed(1)+'\u00D7';
+
+    sensitivity(a);
+  }
+
+  function sensitivity(a){
+    // by scenario, year 1 @ 50k
+    var rows='';
+    ['conservative','base','aggressive'].forEach(function(key){
+      var p=PRESETS[key], aa={resale:p.resale,sr:p.servicesRatio,sm:p.servicesMargin/100,ta:p.totalApps,
+        pcu:p.pctCustom/100,ape:p.appsPerEng,ce:p.customEff,ec:120000,pj:p.projects,fee:p.implFee,im:p.implMargin/100};
+      var r=yr(50000,aa);
+      var nm=key.charAt(0).toUpperCase()+key.slice(1);
+      rows+='<tr><td class="lbl">'+nm+'</td><td class="ralign num">'+fmtS(r.pnl)+'</td><td class="ralign num">'+fmtS(r.capVal)+'</td><td class="ralign num">'+(r.pnl/r.licCommit).toFixed(1)+'\u00D7</td></tr>';
+    });
+    $('scenTbl').innerHTML=rows;
+
+    // by attach multiple, current inputs, year 1 @ current Y1 seats
+    var seats=num('users'); var arows='';
+    [0,2,4,6,8].forEach(function(mult){
+      var aa=Object.assign({},a); aa.sr=mult;
+      var r=yr(seats,aa);
+      arows+='<tr><td class="lbl">'+mult+'\u00D7</td><td class="ralign num">'+fmtS(r.pnl)+'</td><td class="ralign num">'+(r.pnl/r.licCommit).toFixed(1)+'\u00D7</td></tr>';
+    });
+    $('attachTbl').innerHTML=arows;
+  }
+
+  function applyPreset(key){
+    var p=PRESETS[key];
+    for(var k in p){ if($(k)) $(k).value=p[k]; }
+    document.querySelectorAll('#seg button').forEach(function(b){
+      b.classList.toggle('on', b.getAttribute('data-preset')===key);
+    });
+    calc();
+  }
+
+  document.querySelectorAll('#seg button').forEach(function(b){
+    b.addEventListener('click',function(){ applyPreset(b.getAttribute('data-preset')); });
+  });
+  $('resetBtn').addEventListener('click',function(){ applyPreset('base'); });
+
+  ['users','resale','servicesRatio','servicesMargin','totalApps','pctCustom','appsPerEng','customEff','engCost','projects','implFee','implMargin']
+    .forEach(function(id){ var el=$(id); if(el) el.addEventListener('input',calc); });
+  ['s1','s2','s3'].forEach(function(id){ var el=$(id); if(el) el.addEventListener('input',function(){proj();}); });
+
+  var tabs=document.querySelectorAll('#tabs button');
+  tabs.forEach(function(b){
+    b.addEventListener('click',function(){
+      tabs.forEach(function(x){x.classList.remove('active');});
+      b.classList.add('active');
+      document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('active');});
+      $('p-'+b.getAttribute('data-tab')).classList.add('active');
+      window.scrollTo({top:0,behavior:'smooth'});
+    });
+  });
+
+  calc();
+})();
+</script>
+</body>
+</html>
